@@ -1,0 +1,64 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --cell-width: 20vmin;
+  --grid-size: 4;
+  --cell-gap: 2vmin;
+  --border-rad: 1vmin;
+  --y: 3;
+  --x: 0;
+}
+
+body {
+  background-color: #333;
+  /* margin: 0; */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-rad);
+  font-size: 7.5vmin;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: var(--border-rad);
+  color: #CCC;
+}
+
+
+#game-board {
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(var(--grid-size), var(--cell-width));
+  grid-template-rows: repeat(var(--grid-size), var(--cell-width));
+  /* gap: var(--cell-gap); */
+  row-gap: var(--cell-gap);
+  column-gap: var(--cell-gap);
+  background-color: #AAA;
+  padding: var(--cell-gap);
+  border-radius: var(--border-rad);
+} 
+
+.cell {
+  background-color: #CCC;
+  border-radius: var(--border-rad);
+}
+
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: var(--cell-width);
+  height: var(--cell-width);
+  top: calc(calc(var(--cell-width) * var(--y)) + calc(var(--cell-gap) * var(--y)) + var(--cell-gap));
+  left: calc(calc(var(--cell-width) * var(--x)) + calc(var(--cell-gap) * var(--x)) + var(--cell-gap));
+  background-color: green;
+  border-radius: var(--border-rad);
+}
