@@ -3,12 +3,16 @@
 }
 
 :root {
-  --cell-width: 20vmin;
+  /* dynamic css variables------------- */
+  /* --cell-width: 20vmin;
   --grid-size: 4;
   --cell-gap: 2vmin;
-  --border-rad: 1vmin;
   --y: 3;
   --x: 0;
+  --tile-brightness: 
+  --text-brightness:  */
+  /* static css variables------------- */
+  --border-rad: 1vmin;
 }
 
 body {
@@ -59,6 +63,7 @@ body {
   height: var(--cell-width);
   top: calc(calc(var(--cell-width) * var(--y)) + calc(var(--cell-gap) * var(--y)) + var(--cell-gap));
   left: calc(calc(var(--cell-width) * var(--x)) + calc(var(--cell-gap) * var(--x)) + var(--cell-gap));
-  background-color: green;
+  background-color: var(--tile-brightness);
+  color: var(--text-brightness);
   border-radius: var(--border-rad);
 }
