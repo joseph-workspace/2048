@@ -20,16 +20,26 @@ export default class Grid {
 class Cell {
   #tile
   #mergeTile
-  
+  #x
+  #y
+
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
+    this.#x = x;
+    this.#y = y;
     this.#tile = null;
     this.#mergeTile = null;
   }
+  get x() {
+    return this.#x;
+  }
+  get y() {
+    return this.#y;
+  }
 
   set tile(newTile) {
-
+    this.#tile = newTile;
+    newTile.x = this.#x;
+    newTile.y = this.#y;
   }
 }
 
