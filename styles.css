@@ -63,7 +63,20 @@ body {
   height: var(--cell-width);
   top: calc(calc(var(--cell-width) * var(--y)) + calc(var(--cell-gap) * var(--y)) + var(--cell-gap));
   left: calc(calc(var(--cell-width) * var(--x)) + calc(var(--cell-gap) * var(--x)) + var(--cell-gap));
-  background-color: var(--tile-brightness);
-  color: var(--text-brightness);
+  color: hsl(147, 50%, var(--text-brightness));
+  background-color: hsl(147, 50%, var(--tile-brightness));
   border-radius: var(--border-rad);
+  transition: top 100ms ease-in-out, left 150ms ease-in-out;
+  animation: popup 225ms ease-in-out;
+}
+
+@keyframes popup {
+  0% {
+    opacity: rgba(0,0,0,0.5);
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1.0;
+    transform: sclae(1);
+  }
 }

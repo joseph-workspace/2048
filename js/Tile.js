@@ -1,6 +1,7 @@
 export default class Tile {
   #x
   #y
+  #value
 
 
   constructor(boardElement, value=Math.random() < 0.5 ? '4' : '2') {
@@ -24,7 +25,15 @@ export default class Tile {
   }
 
   set value(tileValue) {
+    this.#value = tileValue;
     this.tileElement.textContent = tileValue;
+    //set color of tile dynamically based on Powers of 2
+    const powerOf2 = Math.log2(this.#value);
+    const tileBrightness = 100 - (9 * powerOf2);
+    const textBrightness = 9 * powerOf2;
+    //set tile
+    this.tileElement.style.setProperty('--tile-brightness', `${tileBrightness}%`);
+    this.tileElement.style.setProperty('--text-brightness', `${textBrightness}%`);
   }
 
 }

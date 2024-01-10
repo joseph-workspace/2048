@@ -29,9 +29,15 @@ class Cell {
     this.#tile = null;
     this.#mergeTile = null;
   }
+
+  get tile() {
+    return this.#tile;
+  }
+
   get x() {
     return this.#x;
   }
+
   get y() {
     return this.#y;
   }

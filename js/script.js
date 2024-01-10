@@ -5,7 +5,7 @@ const gameBoard = document.getElementById('game-board');
 
 const grid = new Grid(gameBoard);
 
-console.log(grid.getRandomCell())
+console.log(grid.tiles)
 grid.getRandomCell().tile = new Tile(gameBoard);
 grid.getRandomCell().tile = new Tile(gameBoard);  
 
