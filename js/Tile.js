@@ -11,7 +11,7 @@ export default class Tile {
     this.tileElement.classList.add('tile');
     //add 'tile' div as a child of boardElement div
     boardElement.append(this.tileElement);
-
+    //this will call 
     this.value = value;
   }
 
@@ -24,6 +24,10 @@ export default class Tile {
     this.tileElement.style.setProperty('--y', yPos);
   }
 
+  get value() {
+    return this.#value;
+  }
+
   set value(tileValue) {
     this.#value = tileValue;
     this.tileElement.textContent = tileValue;
@@ -31,7 +35,8 @@ export default class Tile {
     const powerOf2 = Math.log2(this.#value);
     const tileBrightness = 100 - (9 * powerOf2);
     const textBrightness = 9 * powerOf2;
-    //set tile
+    //set tile css variables
+    //eventually add color variable so that user can change tile color at the beginning of a new game
     this.tileElement.style.setProperty('--tile-brightness', `${tileBrightness}%`);
     this.tileElement.style.setProperty('--text-brightness', `${textBrightness}%`);
   }
