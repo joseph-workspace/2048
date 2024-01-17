@@ -30,6 +30,7 @@ export default class Grid {
       return groupedCells;
     }, [])
   }
+
 }
 
 class Cell {
@@ -64,12 +65,46 @@ class Cell {
     tileValue.y = this.#y;
   }
 
+  get mergeTile() {
+    return this.#mergeTile;
+  }
+
   set mergeTile(tile) {
+    this.#mergeTile = tile;
+    //Reason for the guard clause to check if mergeTile is null:
+    //without this check 
+    if (this.#mergeTile == null) return;
+    //set tile of the cell that's moving so that it
+    //moves in the GUI
+    tile = this.#tile;
+    //remove cell that just moved from the DOM?
 
   }
 
+  mergeTiles() {
+    if (this.#tile == null || this.#mergeTile == null) return;
+    // do arithmitic for new tile value
+    const sum = parseInt(this.#tile.value) + parseInt(this.#mergeTile.value);
+    //updates tile value and changes background color of tile
+    //as well as tile's font color
+    this.#tile.value = sum;
+    // remove old tile from the dom?
+    this.#mergeTile.remove();
+    // set mergeTiles back to null to reset cells for next turn
+    this.#mergeTile = null;
+  }
+
+
   canAccept(movingCell) {
-    return (this.#tile == null || (this.#tile.value === movingCell.#tile.value) && this.#mergeTile == null);
+    //Explanation of encountered bug with this.#tile.value === movingCell.#tile.value:
+    //because I use a string in the Tile constructor for the values of 'value'
+    // I end up having to use parseInt() when performing addition within mergeTiles()
+    //this created a discrepency between randomly generated tiles (only 2s and 4s) and
+    //tiles that were created as the result of a merge. In order to fix this I ended up
+    //using the == operator instead of === however, another possible fix would just be
+    //to change the number back to a string in mergeTiles() with this.#tile.value = sum.toString()
+    //either fix works!
+    return (this.#tile == null || (this.#tile.value == movingCell.#tile.value) && this.#mergeTile == null);
   }
 
 }

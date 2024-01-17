@@ -41,4 +41,10 @@ export default class Tile {
     this.tileElement.style.setProperty('--text-brightness', `${textBrightness}%`);
   }
 
+  //function that removes the tile after it's moved to merge 
+  //(when a mergeTile is encountered) from the DOM
+  remove() {
+    this.tileElement.remove();
+  }
+
 }

@@ -25,15 +25,14 @@ function handleInput(e) {
       moveDown();
       setupInput();
       break;
-    case 'ArrowRight':
-      moveRight();
-      setupInput();
-      break;
-    case 'ArrowLeft':
-      moveLeft();
-      setupInput();
-      break;
-  
+      case 'ArrowLeft':
+        moveLeft();
+        setupInput();
+        break;  
+      case 'ArrowRight':
+        moveRight();
+        setupInput();
+        break;
     default:
       // console.log('Please push one of the arrow keys!')
       setupInput();
@@ -41,8 +40,13 @@ function handleInput(e) {
   }
   //after
   //add new tile at the end of turn; merge tiles etc.
+  const addedTile = new Tile(gameBoard);
+  grid.getRandomCell().tile = addedTile;
 
-
+  //mergeTiles() fcn call here
+  grid.tiles.forEach(cell => cell.mergeTiles())
+  // console.log(`After mergeTiles is complete, the state of tiles is: ${JSON.stringify(grid.tiles)}`)
+  console.log(grid.tiles);
 }
 
 function moveUp() {
@@ -83,8 +87,11 @@ function moveTiles(formattedCells) {
       //it will be moved!
       if (lastValidCell != null) {
         if (lastValidCell.tile != null) {
-          //set mergeTile Cell class property
-
+          //if we're here, then lastValidCell's a mergeTile so we need to set it!
+          // lastValidCell.tile = cell.tile;
+          lastValidCell.mergeTile = cell.tile;
+          cell.tile = null;
+          // console.log(grid.tiles);
         } else {
           lastValidCell.tile = cell.tile;
           cell.tile = null;
