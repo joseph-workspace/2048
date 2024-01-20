@@ -15,24 +15,24 @@ function setupInput() {
   document.addEventListener('keyup', handleInput, { once: true });
 }
 
-function handleInput(e) {
+async function handleInput(e) {
   switch (e.key) {
     case 'ArrowUp':
-      moveUp();
+      await moveUp();
       setupInput();
       break;
     case 'ArrowDown':
-      moveDown();
+      await moveDown();
       setupInput();
       break;
-      case 'ArrowLeft':
-        moveLeft();
-        setupInput();
-        break;  
-      case 'ArrowRight':
-        moveRight();
-        setupInput();
-        break;
+    case 'ArrowLeft':
+      await moveLeft();
+      setupInput();
+      break;  
+    case 'ArrowRight':
+      await moveRight();
+      setupInput();
+      break;
     default:
       // console.log('Please push one of the arrow keys!')
       setupInput();
@@ -63,41 +63,48 @@ function moveRight() {
 }
 
 function moveTiles(formattedCells) {
-  formattedCells.forEach(groupedCells => {
-    for (let i = 1; i < groupedCells.length; i++) {
-      const cell = groupedCells[i];
-      if (cell.tile == null) continue;
-      let lastValidCell;
-      for (let j = i - 1; j >= 0; j--){
-        //Reason for the break check before lastValidCell gets updated:
-        //This occurs so that if there's another tile on the row/column 
-        //of the tile you're trying to move then the tile will nestle up
-        //to the next available space.
 
-        //Failed Attempt explanation:
-        //At first I tried this for loop without the cellToCheck variable altogether
-        //and that caused problems with the tile not moving up when there
-        //were other tiles already above it (assuming the player pressed up).
-        //The same behavior occured with all other directions as well.
-        const cellToCheck = groupedCells[j];
-        if (!cellToCheck.canAccept(cell)) break;
-        lastValidCell = cellToCheck;
-      }
-      //if lastValidCell passed the double nested for loop check then
-      //it will be moved!
-      if (lastValidCell != null) {
-        if (lastValidCell.tile != null) {
-          //if we're here, then lastValidCell's a mergeTile so we need to set it!
-          // lastValidCell.tile = cell.tile;
-          lastValidCell.mergeTile = cell.tile;
-          cell.tile = null;
-          // console.log(grid.tiles);
-        } else {
-          lastValidCell.tile = cell.tile;
-          cell.tile = null;
-          // console.log(grid.tiles)
+  return Promise.all(
+    formattedCells.flatMap(groupedCells => {
+      const promises = [];
+      for (let i = 1; i < groupedCells.length; i++) {
+        const cell = groupedCells[i];
+        if (cell.tile == null) continue;
+        let lastValidCell;
+        for (let j = i - 1; j >= 0; j--){
+          //Reason for the break check before lastValidCell gets updated:
+          //This occurs so that if there's another tile on the row/column 
+          //of the tile you're trying to move then the tile will nestle up
+          //to the next available space.
+  
+          //Failed Attempt explanation:
+          //At first I tried this for loop without the cellToCheck variable altogether
+          //and that caused problems with the tile not moving up when there
+          //were other tiles already above it (assuming the player pressed up).
+          //The same behavior occured with all other directions as well.
+          const cellToCheck = groupedCells[j];
+          if (!cellToCheck.canAccept(cell)) break;
+          lastValidCell = cellToCheck;
+        }
+        //if lastValidCell passed the double nested for loop check then
+        //it will be moved!
+        if (lastValidCell != null) {
+          if (lastValidCell.tile != null) {
+            promises.push(cell.tile.cssAnimation());
+            //if we're here, then lastValidCell's a mergeTile so we need to set it!
+            // lastValidCell.tile = cell.tile;
+            lastValidCell.mergeTile = cell.tile;
+            cell.tile = null;
+            // console.log(grid.tiles);
+          } else {
+            lastValidCell.tile = cell.tile;
+            cell.tile = null;
+            // console.log(grid.tiles)
+          }
         }
       }
-    }
-  })
+      // console.log(promises);
+      return promises;
+    })
+  )
 }

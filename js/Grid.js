@@ -70,13 +70,23 @@ class Cell {
   }
 
   set mergeTile(tile) {
+    //Explanation of tile.x and tile.y lines of code below:
+    //At first I tried the following line of code (instead of the tile.x and y definitions I have now) tile = this.#tile
+    //this did not work as expected with the transitionend event listener. This is because the
+    //Tile class x and y setters were never getting called, thus the css variables weren't being
+    //updated correctly by the JavaScript. However it was updating the Grid class tiles variable
+    //correctly, otherwise I would've noticed it sooner.
+
+    //Observed buggy behavior: merge tiles weren't moving as they should and it went
+    //unnoticed for awhile because in the mergeTiles() fcn the cell was getting removed from the DOM by
+    //the remove() fcn.
     this.#mergeTile = tile;
     //Reason for the guard clause to check if mergeTile is null:
     //without this check 
     if (this.#mergeTile == null) return;
-    //set tile of the cell that's moving so that it
-    //moves in the GUI
-    tile = this.#tile;
+    
+    tile.x = this.#x;
+    tile.y = this.#y;
     //remove cell that just moved from the DOM?
 
   }

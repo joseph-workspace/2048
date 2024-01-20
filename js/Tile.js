@@ -47,4 +47,10 @@ export default class Tile {
     this.tileElement.remove();
   }
 
+  cssAnimation(listener='transitionend') {
+    return new Promise(res => (
+      this.tileElement.addEventListener(listener, res, { once: true })
+    ))
+  }
+
 }
