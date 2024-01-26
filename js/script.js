@@ -1,7 +1,9 @@
 import Grid from './Grid.js';
 import Tile from './Tile.js';
+import Player from './Player.js';
 
 const gameBoard = document.getElementById('game-board');
+
 
 const grid = new Grid(gameBoard);
 
@@ -18,18 +20,34 @@ function setupInput() {
 async function handleInput(e) {
   switch (e.key) {
     case 'ArrowUp':
+      if (!canMoveUp()) {
+        setupInput();
+        return;  
+      }
       await moveUp();
       setupInput();
       break;
     case 'ArrowDown':
+      if (!canMoveDown()) {
+        setupInput();
+        return;  
+      }
       await moveDown();
       setupInput();
       break;
     case 'ArrowLeft':
+      if (!canMoveLeft()) {
+        setupInput();
+        return;  
+      }
       await moveLeft();
       setupInput();
-      break;  
+      break;
     case 'ArrowRight':
+      if (!canMoveRight()) {
+        setupInput();
+        return;  
+      }
       await moveRight();
       setupInput();
       break;
@@ -42,6 +60,13 @@ async function handleInput(e) {
   //add new tile at the end of turn; merge tiles etc.
   const addedTile = new Tile(gameBoard);
   grid.getRandomCell().tile = addedTile;
+
+  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+    await addedTile.cssAnimation('animationend');
+    grid.tiles.forEach(cell => cell.mergeTiles())
+    alert('You lost! Please try again.')
+    return
+  }
 
   //mergeTiles() fcn call here
   grid.tiles.forEach(cell => cell.mergeTiles())
@@ -103,8 +128,35 @@ function moveTiles(formattedCells) {
           }
         }
       }
-      // console.log(promises);
       return promises;
     })
   )
+}
+
+function canMoveUp() {
+  return canMove(grid.getCellsByColumn())
+}
+
+function canMoveDown() {
+  return canMove(grid.getCellsByColumn().map(col => [...col].reverse()))
+}
+
+function canMoveLeft() {
+  return canMove(grid.getCellsByRow())
+}
+
+function canMoveRight() {
+  return canMove(grid.getCellsByRow().map(row => [...row].reverse()))
+}
+
+function canMove(formattedCells) {
+  return formattedCells.some(groupedCells => {
+    return groupedCells.some((cell, index) => {
+      //If either of the 2 conditions below is true, then the tile can't move
+      if (index === 0 || cell.tile == null) return false;
+      const adjacentCell = groupedCells[index - 1];
+      //If either of the 2 conditions below are true then at least 1 cell can move 
+      if (adjacentCell.tile == null || cell.tile.value === adjacentCell.tile.value) return true;
+    })
+  })
 }

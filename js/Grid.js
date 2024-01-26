@@ -58,6 +58,10 @@ class Cell {
     return this.#y;
   }
 
+  get tile() {
+    return this.#tile;
+  }
+
   set tile(tileValue) {
     this.#tile = tileValue;
     if (this.#tile == null) return;
@@ -97,7 +101,7 @@ class Cell {
     const sum = parseInt(this.#tile.value) + parseInt(this.#mergeTile.value);
     //updates tile value and changes background color of tile
     //as well as tile's font color
-    this.#tile.value = sum;
+    this.#tile.value = sum.toString();
     // remove old tile from the dom?
     this.#mergeTile.remove();
     // set mergeTiles back to null to reset cells for next turn
@@ -114,7 +118,7 @@ class Cell {
     //using the == operator instead of === however, another possible fix would just be
     //to change the number back to a string in mergeTiles() with this.#tile.value = sum.toString()
     //either fix works!
-    return (this.#tile == null || (this.#tile.value == movingCell.#tile.value) && this.#mergeTile == null);
+    return (this.#tile == null || (this.#tile.value === movingCell.#tile.value) && this.#mergeTile == null);
   }
 
 }
