@@ -7,7 +7,6 @@ const gameBoard = document.getElementById('game-board');
 
 const grid = new Grid(gameBoard);
 
-// console.log(grid.tiles)
 grid.getRandomCell().tile = new Tile(gameBoard);
 grid.getRandomCell().tile = new Tile(gameBoard);  
 setupInput();
@@ -63,7 +62,7 @@ async function handleInput(e) {
 
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     await addedTile.cssAnimation('animationend');
-    grid.tiles.forEach(cell => cell.mergeTiles())
+    // grid.tiles.forEach(cell => cell.mergeTiles())
     alert('You lost! Please try again.')
     return
   }
@@ -120,11 +119,9 @@ function moveTiles(formattedCells) {
             // lastValidCell.tile = cell.tile;
             lastValidCell.mergeTile = cell.tile;
             cell.tile = null;
-            // console.log(grid.tiles);
           } else {
             lastValidCell.tile = cell.tile;
             cell.tile = null;
-            // console.log(grid.tiles)
           }
         }
       }

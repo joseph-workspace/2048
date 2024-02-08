@@ -27,7 +27,7 @@ body {
 }
 
 .modal-overlay {
-  /* display: none; */
+  display: none;
   position: absolute;
   background-color: rgba(0,0,0,0.7);
   top: 0;
